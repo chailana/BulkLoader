@@ -1,25 +1,23 @@
 FROM xgorn/python-phantomjs:3.9
 
-# Copy coding files to workdir
-COPY . /app/
-WORKDIR /app/
+# Set working directory
+WORKDIR /app
 
-ENV PYTHONUNBUFFERED=1
-
-# Copy requirements.txt to root
+# Copy and install dependencies
 COPY requirements.txt .
-
-# Install dependencies
 RUN pip3 install --no-cache-dir -r requirements.txt
-RUN apt-get update
-RUN apt-get install -y ffmpeg supervisor
 
-# Copy the start.sh script and Supervisor configuration file
-COPY start.sh /app/start.sh
+# Install additional packages
+RUN apt-get update && apt-get install -y ffmpeg supervisor
+
+# Copy application files
+COPY . /app
+
+# Copy Supervisor configuration
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Make the start.sh script executable
+# Make start.sh executable
 RUN chmod +x /app/start.sh
 
-# Run the start.sh script
+# Command to run the application
 CMD ["/app/start.sh"]
