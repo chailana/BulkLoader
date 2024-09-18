@@ -3,6 +3,6 @@ TgCrypto
 yt-dlp
 hachoir
 python-dotenv
-Flask
+flask
 python-telegram-bot
 gunicorn
